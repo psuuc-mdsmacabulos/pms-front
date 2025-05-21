@@ -89,7 +89,7 @@ export const ProductProvider = ({ children }) => {
     const createProduct = async (formData) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://127.0.0.1:8000/api/products', formData, {
+            const response = await axios.post('http://127.0.0.1:8000/api/products/store', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setProducts(prev => [...prev, response.data]); // Append new product

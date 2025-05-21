@@ -18,7 +18,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
                           <Route path="/" element={<LoginForm />} />
                           <Route path="/register" element={<RegisterForm />} />
                           <Route path="/productlist" element={<ProductList />} />
-                          <Route path="/productdetails" element={<ProductDetail />} />   
+                          <Route path="/productdetails/:id" element={<ProductDetail />} />  
                           <Route path="/wishlist" element={<WishlistPage />} />
                           <Route path="/adminproducts" element={<AdminProductList />} />
                           <Route path="/createproduct" element={<CreateProductForm />} />
