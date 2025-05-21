@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
      import ProductDetail from './components/ProductDetails';
      import LoginForm from './components/LoginForm';
      import RegisterForm from './components/RegisterForm';
+     import WishlistPage from './components/WishlistPage';
+     import AdminProductList from './components/AdminProductList';
+     import CreateProductForm from './components/CreateProduct';
 
 
      function App() {
@@ -16,6 +19,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
                           <Route path="/register" element={<RegisterForm />} />
                           <Route path="/productlist" element={<ProductList />} />
                           <Route path="/productdetails" element={<ProductDetail />} />   
+                          <Route path="/wishlist" element={<WishlistPage />} />
+                          <Route path="/adminproducts" element={<AdminProductList />} />
+                          <Route path="/createproduct" element={<CreateProductForm />} />
                          </Routes>
                      </div>
                  </Router>
