@@ -1,17 +1,20 @@
 import { useState, useContext } from 'react';
 import { ProductContext } from './ProductContext';
-import { Link } from 'react-router-dom'; // Added for navigation
+import { Link, useNavigate } from 'react-router-dom'; 
 
 const LoginForm = () => {
     const { login } = useContext(ProductContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const success = await login(email, password);
-        if (!success) {
+        if (success) {
+            navigate('/productlist'); 
+        } else {
             setError('Invalid email or password');
         }
     };

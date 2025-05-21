@@ -7,18 +7,16 @@ export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState([]);
     const [wishlist, setWishlist] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userRole, setUserRole] = useState(null); // New: Store user role
-    const [error, setError] = useState(null); // New: Store API errors
+    const [error, setError] = useState(null);
 
-    // Fetch products
     const fetchProducts = async () => {
         try {
             const response = await axios.get('http://127.0.0.1:8000/api/products');
             setProducts(response.data);
             setError(null);
         } catch (error) {
-            console.error('Error fetching products:', error);
-            setError('Failed to fetch products.');
+            console.error('Error fetching products:', error.response?.data || error.message);
+            setError(error.response?.data?.message || 'Failed to fetch products.');
         }
     };
 
@@ -26,12 +24,6 @@ export const ProductProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         if (token) {
             setIsLoggedIn(true);
-            // Optionally fetch user role from backend
-            axios.get('http://127.0.0.1:8000/api/user', {
-                headers: { Authorization: `Bearer ${token}` }
-            })
-                .then(response => setUserRole(response.data.role)) // Assumes backend returns user role
-                .catch(() => setUserRole(null));
         }
         fetchProducts();
     }, []);
@@ -41,12 +33,11 @@ export const ProductProvider = ({ children }) => {
             const response = await axios.post('http://127.0.0.1:8000/api/login', { email, password });
             localStorage.setItem('token', response.data.token);
             setIsLoggedIn(true);
-            setUserRole(response.data.user.role); // Assumes backend returns user role
             setError(null);
             return true;
         } catch (error) {
-            console.error('Login failed:', error);
-            setError('Login failed. Please check your credentials.');
+            console.error('Login failed:', error.response?.data || error.message);
+            setError(error.response?.data?.message || 'Login failed. Please check your credentials.');
             return false;
         }
     };
@@ -61,12 +52,11 @@ export const ProductProvider = ({ children }) => {
             });
             localStorage.setItem('token', response.data.token);
             setIsLoggedIn(true);
-            setUserRole(response.data.user.role); // Assumes backend returns user role
             setError(null);
             return true;
         } catch (error) {
-            console.error('Registration failed:', error);
-            setError('Registration failed. Please try again.');
+            console.error('Registration failed:', error.response?.data || error.message);
+            setError(error.response?.data?.message || 'Registration failed. Please try again.');
             return false;
         }
     };
@@ -74,8 +64,7 @@ export const ProductProvider = ({ children }) => {
     const logout = () => {
         localStorage.removeItem('token');
         setIsLoggedIn(false);
-        setUserRole(null);
-        setWishlist([]); // Optional: Clear wishlist on logout
+        setWishlist([]);
         setError(null);
     };
 
@@ -92,12 +81,12 @@ export const ProductProvider = ({ children }) => {
             const response = await axios.post('http://127.0.0.1:8000/api/products/store', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setProducts(prev => [...prev, response.data]); // Append new product
+            setProducts(prev => [...prev, response.data]);
             setError(null);
             return true;
         } catch (error) {
-            console.error('Failed to create product:', error);
-            setError('Failed to create product.');
+            console.error('Failed to create product:', error.response?.data || error.message);
+            setError(error.response?.data?.message || 'Failed to create product.');
             return false;
         }
     };
@@ -107,14 +96,13 @@ export const ProductProvider = ({ children }) => {
             products,
             wishlist,
             isLoggedIn,
-            userRole,
             error,
             login,
             register,
             logout,
             addToWishlist,
             createProduct,
-            fetchProducts // Expose fetchProducts for manual refresh if needed
+            fetchProducts
         }}>
             {children}
         </ProductContext.Provider>

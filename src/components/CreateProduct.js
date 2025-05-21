@@ -23,11 +23,26 @@ const CreateProduct = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const success = await createProduct(formData);
-    if (success) {
-      navigate('/admin/products');
-    } else {
-      alert(error || 'Failed to create product.');
+    const processedFormData = {
+      ...formData,
+      price: parseFloat(formData.price) || 0,
+      stock_quantity: parseInt(formData.stock_quantity) || 0,
+    };
+
+    try {
+      const success = await createProduct(processedFormData);
+      if (success) {
+        navigate('/productlist');
+      } else {
+        throw new Error(error || 'Failed to create product.');
+      }
+    } catch (err) {
+      console.error('Create product error:', err);
+      if (err.response?.data?.error) {
+        alert(`Failed to create product: ${JSON.stringify(err.response.data.error)}`);
+      } else {
+        alert(`Failed to create product: ${err.message}`);
+      }
     }
   };
 
@@ -48,7 +63,7 @@ const CreateProduct = () => {
 
         <div className="mb-3">
           <label className="form-label">Price</label>
-          <input type="number" name="price" className="form-control" value={formData.price} onChange={handleChange} required />
+          <input type="number" name="price" className="form-control" value={formData.price} onChange={handleChange} step="0.01" required />
         </div>
 
         <div className="mb-3">

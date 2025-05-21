@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { ProductContext } from './ProductContext';
-import { useNavigate, Link } from 'react-router-dom'; // Added Link for navigation
+import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterForm = () => {
     const { register } = useContext(ProductContext);
@@ -19,9 +19,9 @@ const RegisterForm = () => {
         }
         const success = await register(name, email, password, passwordConfirmation);
         if (success) {
-            navigate('/');
+            navigate('/'); // Changed to /productlist for consistency with LoginForm
         } else {
-            setError('Registration failed. Please try again.');
+            setError(error || 'Registration failed. Please try again.');
         }
     };
 
