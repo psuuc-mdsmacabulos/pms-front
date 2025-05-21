@@ -4,12 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const ProductList = () => {
   const { products, addToWishlist } = useContext(ProductContext);
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
   return (
     <div className="container py-4">
       <h2 className="mb-4">Products</h2>
-      {/* Add button to navigate to /createproduct */}
       <div className="mb-4">
         <button
           className="btn btn-success"
@@ -30,7 +29,7 @@ const ProductList = () => {
               />
               <div className="card-body">
                 <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">${product.price}</p>
+                <p className="card-text">₱{product.price}</p>
                 <div className="d-flex justify-content-between">
                   <Link to={`/productdetails/${product.id}`} className="btn btn-primary">
                     View Details
