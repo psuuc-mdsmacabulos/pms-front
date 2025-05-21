@@ -1,13 +1,23 @@
 import { useContext } from 'react';
 import { ProductContext } from './ProductContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProductList = () => {
   const { products, addToWishlist } = useContext(ProductContext);
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   return (
     <div className="container py-4">
       <h2 className="mb-4">Products</h2>
+      {/* Add button to navigate to /createproduct */}
+      <div className="mb-4">
+        <button
+          className="btn btn-success"
+          onClick={() => navigate('/createproduct')}
+        >
+          Create New Product
+        </button>
+      </div>
       <div className="row row-cols-1 row-cols-md-3 g-4">
         {products.map(product => (
           <div key={product.id} className="col">
